@@ -75,5 +75,6 @@
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
         'Welcome, ' + response.first_name + '.';
+      document.getElementById('login_btn').innerHTML = '';
     });
   }

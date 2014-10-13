@@ -4,6 +4,8 @@ html(ng-app="btcApp")
         meta(charset="utf-8")
         meta(name="viewport", content="width=device-width, initial-scale=1")
         title Beat the Curve
+        script(src='http://d3js.org/d3.v3.min.js')
+        script(src='http://d3js.org/topojson.v1.min.js')
         script(type='text/javascript', src='/js/angular.js')
         script(type='text/javascript', src='/js/app.js')
         script(type='text/javascript', src='/js/facebook.js')
@@ -31,17 +33,11 @@ html(ng-app="btcApp")
            
                 div#form_container
                     div#login_form
-                        div#status
-                            fb:login-button(scope="public_profile,email,user_friends" onlogin="checkLoginState();")
-                        form(action="/login", method="post")
-                          div.row
-                            input(type="text", name="username" placeholder="Username")
-
-                          div.row
-                            input(type="password", name="password" placeholder="Password")
-
-                          div
-                            input(type="submit", value="Log In")
+                        span
+                            span#status
+                            fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")
+                        chart(width="1000" height="500")
+                            div(main-chart)
 
         div#copy.parallax__group
             div#copy_back.parallax__layer--back

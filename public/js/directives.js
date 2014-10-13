@@ -87,7 +87,7 @@ townBookDirectives.directive('myFirstDirective', function() {
 			  $('#legend').show();  
 
 
-					});
+			});
 
 			//console.log(d3.select(".HINGHAM").enter().d.properties.SHAPE_AREA);
 			//d3.select(".HINGHAM").attr("title", "selectify!");
