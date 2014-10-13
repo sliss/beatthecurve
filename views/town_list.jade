@@ -1,0 +1,43 @@
+extends layout
+
+block head
+  script(type='text/javascript', src='/javascripts/controllers/TodoListController.js')
+  script.
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-55573607-1', 'auto');
+    ga('send', 'pageview');
+block content
+
+    .container-fluid(ng-controller="TodoListController", ng-init="initTownList( #{JSON.stringify(towns)} )")
+      //
+        Sidebar content
+    
+      .bar
+        input(ng-model='query', placeholder='Search MA towns')
+      | Sort by:
+      select.select_menu(ng-model='orderProp')
+        option(value='name') Name
+        option(value='population') Population
+        option(value='r_deviance') Over/underperformance
+        option(value='r_deviance_sigma') Over/underperformance (sigma)
+        option(value='p_participation') % Voter Turnout
+        option(value='percent_registered_unenrolled') % Unenrolled
+        option(value='p_baker') % Baker 2010
+        option(value='p_patrick') % Patrick 2010
+        option(value='percent_registered_republicans') % Registered Republicans
+        option(value='unemployment_percentage') Unemployment
+        option(value='local_aid_2013') Local Aid 2013
+        option(value='delta_local_aid_percentage') Local Aid Decrease '08-'13
+        option(value='comments') Comments
+      .big_list
+        div(ng-switch='orderProp')
+          ul(ng-switch-when='name')
+            li(ng-repeat='town in towns | searchName:query | orderBy:orderProp')
+              p.dynamic
+                span.town_name
+                  a(href='#/towns/{{town.slug}}') {{town.name | uppercase}}
+                span.stat_display {{town.county}} County
