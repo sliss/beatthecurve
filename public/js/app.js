@@ -4,7 +4,6 @@ var btcApp = angular.module('btcApp', [
 
 btcApp.controller('HomeController', ['$scope', function($scope) {
   console.log('home controller');
-  $scope.greeting = 'Hola!';
 }]);
 /*
 townBookApp.config(['$routeProvider',
