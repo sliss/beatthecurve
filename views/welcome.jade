@@ -29,6 +29,8 @@ html(ng-app="btcApp")
                 div#state_insight
                     h1.larger-text Beat the 
                         span.gold Curve
+                    h3 5,688 Pledges for $31,215
+    
                     span
                         span#status
                         fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")
@@ -37,6 +39,8 @@ html(ng-app="btcApp")
                         h3 Compassion vs. Contagion
                         chart
                             div(main-chart)
+                        tree
+                            div(tree-chart)
 
         div#copy.parallax__group
             div#copy_back.parallax__layer--back
