@@ -29,75 +29,19 @@ html(ng-app="btcApp")
                 div#state_insight
                     h1.larger-text Beat the 
                         span.gold Curve
-                    h3 Compassion vs. Contagion
-           
+                    span
+                        span#status
+                        fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")
                 div#form_container
                     div#login_form
-                        span
-                            span#status
-                            fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")
-                        chart(width="1000" height="500")
+                        h3 Compassion vs. Contagion
+                        chart
                             div(main-chart)
 
         div#copy.parallax__group
             div#copy_back.parallax__layer--back
             div#copy_base.parallax__layer--base
-                div.copy_content
-                    h2
-                        span.gold Visualize 
-                        | demographic data at a glance.
-
-                    img(src='/bilevel.png') 
-                    div.row
-                        div.col-xs-4
-
-                        p.col-xs-6
-                            |• Census data
-                            br
-                            |• State records
-                            br
-                            |• Polls
-                            br
-                            |• Wikipedia
-                            br
-                            |• 40+ years of election results
-                        
-                div.copy_content
-                    h2 
-                        span.gold Locate 
-                        | important behavioral trends.
-                    div.row
-                        img(src='/statemap.png')  
-                        div.row
-                            div.col-xs-2
-
-                            p.col-xs-8
-                                |• Which towns beat expectations last election?
-                                br
-                                |• Which precincts turn out for mid-terms?
-                                br
-                                |• Which neightborhoods have been hit hardest by unemployment?
-                                br
-                                |• Where are young voters?  Rich voters?  Voters with children?
-
-
-
-                div.copy_content
-                    h2
-                        span.gold Understand 
-                        | voter associations.
-                    div.row
-                        img(src='/clusters.png')  
-                        div.row
-                            div.col-xs-2
-
-                            p.col-xs-8
-                                |• How has a town voted as its population ages?
-                                br
-                                |• What is the local relationship between employment and turnout?
-                                br
-                                |• Which unenrolled voters almost always vote Democrat?
-
+                div.copy_content        
 
     footer
       | © 2014&nbsp&nbsp

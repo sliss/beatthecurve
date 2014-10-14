@@ -4,103 +4,79 @@ var btcApp = angular.module('btcApp', [
 
 btcApp.controller('HomeController', ['$scope', function($scope) {
   console.log('home controller');
-  // ******* chart visualization... should stick this in a directive
-  /*
-  console.log('mainChart');
-  var color = d3.scale.threshold()
-        .domain([1, 2, 3, 4, 5, 6, 7, 8])
-        .range(['#4628e8','#4628e8', '#228dea', '#1cecbc', '#16ee27', '#9af00f', '#f3ab09', '#f50202']);
-
-  var width = 700,
-      height = 460;
-
-  var projection = d3.geo.mercator()
-      .center([-71.7, 42])
-      .rotate([0, 0])
-      .scale(11000)
-      .translate([width / 2, height / 2]);
-
-  var path = d3.geo.path()
-      .projection(projection);
-
-  var svg = d3.select("chart").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("xmlns","http://www.w3.org/2000/svg")
-      .attr("version",1.1); 
-
-
-  d3.json("MA_Topo_Properties.json", function(error, ma) {
-      svg.selectAll(".town")
-        .data(topojson.feature(ma, ma.objects.MA_Towns).features)
-      .enter()
-      .append("a")
-        .attr("xlink:href", function(d) { return "/#/towns/" + d.properties.TOWN.toLowerCase().replace(' ','_'); })
-        .attr("title", function(d) { return d.properties.TOWN; })
-      .append("path")
-        //.attr("class", function(d) { return "town " + d.properties.TOWN; })
-        .attr("class", function(d) { return "town " + d.properties.TOWN; })
-        .style("fill", function(d) { return color(d.properties.victory_district); })
-        .attr("d", path);
-
-      svg.append("path")
-          .datum(topojson.mesh(ma, ma.objects.MA_Towns, function(a, b) { return a !== b; }))
-          .attr("class", "tract-border")
-          .attr("d", path);  
-      console.log('render map complete');
-  });
-
-*/
 }]);
 
 btcApp.directive('mainChart', function() {
     function link() {
       console.log('mainChart');
-      var color = d3.scale.threshold()
-            .domain([1, 2, 3, 4, 5, 6, 7, 8])
-            .range(['#4628e8','#4628e8', '#228dea', '#1cecbc', '#16ee27', '#9af00f', '#f3ab09', '#f50202']);
-
-      var width = 700,
-          height = 460;
-
-      var projection = d3.geo.mercator()
-          .center([-71.7, 42])
-          .rotate([0, 0])
-          .scale(11000)
-          .translate([width / 2, height / 2]);
-
-      var path = d3.geo.path()
-          .projection(projection);
-
+      var margin = {top: 20, right: 20, bottom: 70, left: 40},
+        width = 600 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
+           
+      // Parse the date / time
+      var parseDate = d3.time.format("%m-%d-%y").parse;
+       
+      var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+       
+      var y = d3.scale.linear().range([height, 0]);
+       
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom")
+          .tickFormat(d3.time.format("%m-%d"))
+          .ticks(2);
+       
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left")
+          .ticks(10);
+       
       var svg = d3.select("chart").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .attr("xmlns","http://www.w3.org/2000/svg")
-          .attr("version",1.1); 
-    
-
-      d3.json("MA_Topo_Properties.json", function(error, ma) {
-          svg.selectAll(".town")
-            .data(topojson.feature(ma, ma.objects.MA_Towns).features)
-          .enter()
-          .append("a")
-            .attr("xlink:href", function(d) { return "/#/towns/" + d.properties.TOWN.toLowerCase().replace(' ','_'); })
-            .attr("title", function(d) { return d.properties.TOWN; })
-          .append("path")
-            //.attr("class", function(d) { return "town " + d.properties.TOWN; })
-            .attr("class", function(d) { return "town " + d.properties.TOWN; })
-            .style("fill", function(d) { return color(d.properties.victory_district); })
-            .attr("d", path);
-
-             
-
-          
-
-          svg.append("path")
-              .datum(topojson.mesh(ma, ma.objects.MA_Towns, function(a, b) { return a !== b; }))
-              .attr("class", "tract-border")
-              .attr("d", path);  
-          console.log('render map complete');
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", 
+                "translate(" + margin.left + "," + margin.top + ")");
+       
+      d3.csv("sample_infections.csv", function(error, data) {
+       
+          data.forEach(function(d) {
+              d.date = parseDate(d.date);
+              d.value = +d.value;
+          });
+        
+        x.domain(data.map(function(d) { return d.date; }));
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+       
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+          .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", "-.55em")
+            .attr("transform", "rotate(-90)" );
+       
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+          .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Cases");
+       
+        svg.selectAll("bar")
+            .data(data)
+          .enter().append("rect")
+            .style("fill", "steelblue")
+            .attr("x", function(d) { return x(d.date); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.value); })
+            .attr("height", function(d) { return height - y(d.value); });
+       
       });
     }
 
