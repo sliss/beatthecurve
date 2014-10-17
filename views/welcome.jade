@@ -2,10 +2,9 @@ doctype html
 html(ng-app="btcApp")
     head
         meta(charset="utf-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1")
         title Beat the Curve
-        script(src='http://d3js.org/d3.v3.min.js')
-        script(src='http://d3js.org/topojson.v1.min.js')
+        script(src='//d3js.org/d3.v3.min.js')
+        script(src='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.js')
         script(type='text/javascript', src='/js/angular.js')
         script(type='text/javascript', src='/js/app.js')
         script(type='text/javascript', src='/js/facebook.js')
@@ -21,7 +20,8 @@ html(ng-app="btcApp")
 
         link(rel="stylesheet", href="css/welcome.css")
         link(rel="stylesheet", href="css/bootstrap.css")
-        link(href="http://fonts.googleapis.com/css?family=Lato:300,100", rel="stylesheet", type="text/css")
+        link(rel="stylesheet", href='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.css')
+        link(href="//fonts.googleapis.com/css?family=Lato:300,100", rel="stylesheet", type="text/css")
     div.parallax(ng-controller="HomeController")
         div.parallax__group#group1
             div#copy_back.parallax__layer--back
@@ -29,18 +29,26 @@ html(ng-app="btcApp")
                 div#state_insight
                     h1.larger-text Beat the 
                         span.gold Curve
-                    h3 5,688 Pledges for $31,215
-    
                     span
                         span#status
-                        fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")
+                        fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")    
+                    div Ebola is spreading exponentially from patient to patient– doubling in cases every 32 days.
+                    div Pledge your support, tell your friends, and outrace the curve of contagion with one of compassion.
+                    h2 5,688 Pledges for $31,215
                 div#form_container
-                    div#login_form
-                        h3 Compassion vs. Contagion
-                        chart
-                            div(main-chart)
-                        tree
-                            div(tree-chart)
+                    div.row
+                        div.col-md-6.col-md-offset-3(main-chart)
+                            div#multichart
+                                svg(style='height:300px;')
+                    div.row
+                        div.col-md-6.col-md-offset-3
+                            h2 My 
+                                span.gold Impact
+                                span : 243 pledges for $2,188
+                            div.row 
+                                button.col-md-12#recruit_btn Share and Recruit
+                            tree
+                                div(tree-chart)
 
         div#copy.parallax__group
             div#copy_back.parallax__layer--back
