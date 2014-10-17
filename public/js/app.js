@@ -138,7 +138,7 @@ btcApp.directive('treeChart', function() {
 
       var svg = d3.select("tree").append("svg")
           .attr("width", diameter)
-          .attr("height", diameter - 150)
+          .attr("height", diameter + 50)
         .append("g")
           .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
