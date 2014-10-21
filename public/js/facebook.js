@@ -1,36 +1,36 @@
 // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
-    // The response object is returned with a status field that lets the
-    // app know the current login status of the person.
-    // Full docs on the response object can be found in the documentation
-    // for FB.getLoginStatus().
-    if (response.status === 'connected') {
-      // Logged into your app and Facebook.
-      testAPI();
-    } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
-    }
+function statusChangeCallback(response) {
+  console.log('statusChangeCallback');
+  console.log(response);
+  // The response object is returned with a status field that lets the
+  // app know the current login status of the person.
+  // Full docs on the response object can be found in the documentation
+  // for FB.getLoginStatus().
+  if (response.status === 'connected') {
+    // Logged into your app and Facebook.
+    testAPI();
+  } else if (response.status === 'not_authorized') {
+    // The person is logged into Facebook, but not your app.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into this app.';
+  } else {
+    // The person is not logged into Facebook, so we're not sure if
+    // they are logged into this app or not.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into Facebook.';
   }
+}
 
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
-  function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-  }
+// This function is called when someone finishes with the Login
+// Button.  See the onlogin handler attached to it in the sample
+// code below.
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
 
-  window.fbAsyncInit = function() {
+window.fbAsyncInit = function() {
   FB.init({
     appId      : '643760232410884',
     cookie     : true,  // enable cookies to allow the server to access 
@@ -39,42 +39,90 @@
     version    : 'v2.1' // use version 2.1
   });
 
-  // Now that we've initialized the JavaScript SDK, we call 
-  // FB.getLoginStatus().  This function gets the state of the
-  // person visiting this page and can return one of three states to
-  // the callback you provide.  They can be:
-  //
-  // 1. Logged into your app ('connected')
-  // 2. Logged into Facebook, but not your app ('not_authorized')
-  // 3. Not logged into Facebook and can't tell if they are logged into
-  //    your app or not.
-  //
-  // These three cases are handled in the callback function.
+// Now that we've initialized the JavaScript SDK, we call 
+// FB.getLoginStatus().  This function gets the state of the
+// person visiting this page and can return one of three states to
+// the callback you provide.  They can be:
+//
+// 1. Logged into your app ('connected')
+// 2. Logged into Facebook, but not your app ('not_authorized')
+// 3. Not logged into Facebook and can't tell if they are logged into
+//    your app or not.
+//
+// These three cases are handled in the callback function.
 
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
+FB.getLoginStatus(function(response) {
+  statusChangeCallback(response);
+});
+
+};
+
+// Load the SDK asynchronously
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+// Here we run a very simple test of the Graph API after login is
+// successful.  See statusChangeCallback() for when this call is made.
+function testAPI() {
+  console.log('Welcome!  Fetching your information.... ');
+  FB.api('/me', function(response) {
+    console.log('FB response:', response);
+    console.log('Successful login for: ' + response.name);
+    document.getElementById('status').innerHTML =
+      'Welcome, ' + response.first_name + '.';
+    document.getElementById('login_btn').innerHTML = '';
   });
 
-  };
+   /*
+ * This function makes a call to the og.likes API.  The
+ * object argument is the object you like.  Other types
+ * of APIs may take other arguments. (i.e. the book.reads
+ * API takes a book= argument.)
+ *
+ * Because it's a sample, it also sets the privacy
+ * parameter so that it will create a story that only you
+ * can see.  Remove the privacy parameter and the story
+ * will be visible to whatever the default privacy was when
+ * you added the app.
+ *
+ * Also note that you can view any story with the id, as
+ * demonstrated with the code below.
+ *
+ * APIs used in postLike():
+ * Call the Graph API from JS:
+ *   https://developers.facebook.com/docs/reference/javascript/FB.api
+ * The Open Graph og.likes API:
+ *   https://developers.facebook.com/docs/reference/opengraph/action-type/og.likes
+ * Privacy argument:
+ *   https://developers.facebook.com/docs/reference/api/privacy-parameter
+ */
+}
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('FB response:', response);
-      console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Welcome, ' + response.first_name + '.';
-      document.getElementById('login_btn').innerHTML = '';
-    });
-  }
+function postLike() {
+  console.log('postlike');
+  FB.api(
+     'https://graph.facebook.com/me/og.likes',
+     'post',
+     { object: 'pledge',
+       privacy: {'value': 'SELF'} },
+     function(response) {
+       if (!response) {
+         alert('Error occurred.');
+       } else if (response.error) {
+         document.getElementById('result').innerHTML =
+           'Error: ' + response.error.message;
+       } else {
+         document.getElementById('result').innerHTML =
+           '<a href=\"https://www.facebook.com/me/activity/' +
+           response.id + '\">' +
+           'Story created.  ID is ' +
+           response.id + '</a>';
+       }
+     }
+  );
+}

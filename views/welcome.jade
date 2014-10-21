@@ -3,11 +3,14 @@ html(ng-app="btcApp")
     head
         meta(charset="utf-8")
         title Beat the Curve
+        script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js')
         script(src='//d3js.org/d3.v3.min.js')
         script(src='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.js')
-        script(type='text/javascript', src='/js/angular.js')
-        script(type='text/javascript', src='/js/app.js')
+        script(src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js')
+        script(src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js')
+        script(src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js') 
         script(type='text/javascript', src='/js/facebook.js')
+        script(type='text/javascript', src='/js/app.js')
 
         script.
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -19,7 +22,8 @@ html(ng-app="btcApp")
             ga('send', 'pageview');
 
         link(rel="stylesheet", href="css/welcome.css")
-        link(rel="stylesheet", href="css/bootstrap.css")
+        link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css")
+        link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.css')
         link(rel="stylesheet", href='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.css')
         link(href="//fonts.googleapis.com/css?family=Lato:300,100", rel="stylesheet", type="text/css")
     div.parallax(ng-controller="HomeController")
@@ -31,10 +35,13 @@ html(ng-app="btcApp")
                         span.gold Curve
                     span
                         span#status
-                        fb:login-button#login_btn(scope="public_profile,email,user_friends" onlogin="checkLoginState();")    
-                    div Ebola is spreading exponentially from patient to patient– doubling in cases every 32 days.
-                    div Pledge your support, tell your friends, and outrace the curve of contagion with one of compassion.
-                    h2 5,688 Pledges for $31,215
+                        fb:login-button#login_btn(scope="public_profile,email,user_friends,publish_actions" onlogin="checkLoginState();")    
+                    h2 Ebola is spreading exponentially from patient to patient– doubling in cases every 32 days.
+                    h2 Pledge your support, tell your friends, and outrace the curve of contagion with one of compassion.
+                    h2
+                        span#total_pledges 5,688 
+                        span Pledges for 
+                        span#sum_donations $31,215
                 div#form_container
                     div.row
                         div.col-md-6.col-md-offset-3(main-chart)
@@ -44,13 +51,33 @@ html(ng-app="btcApp")
                         div.col-md-6.col-md-offset-3
                             h2 My 
                                 span.gold Impact
-                                span : 243 pledges for $2,188
+                                span : 
+                                span#sum_descendants 243 
+                                span pledges for 
+                                span#sum_descendants_donations $2,188
                             div.row 
-                                button.col-md-12#recruit_btn Share and Recruit
+                                div.col-md-3
+                                //button.col-md-6#pledge_btn Pledge Your Help
+                                button.col-md-6(ng-click="toggleModal()") Open Modal Dialog
+                                modal-dialog(show="modalShown", width="750px", height="60%")
+                                    p Modal Content Goes here
+                                
+                                div
+                                  | This example creates a story on Facebook using the
+                                  a(href="https://developers.facebook.com/docs/reference/ogaction/og.likes")
+                                    code og.likes
+                                  | API.  That story will just say
+                                  | that you like an
+                                  a(href="http://techcrunch.com/2013/02/06/facebook-launches-developers-live-video-channel-to-keep-its-developer-ecosystem-up-to-date/")
+                                    | article on TechCrunch
+                                  | .  The story should only
+                                  | be visible to you.
+
+                                div
+                                  input(type="button", value="Create a story with an og.likes action", onclick="postLike();")
+
                             tree
                                 div(tree-chart)
-                                
-
 
 
         div#copy.parallax__group
@@ -61,3 +88,21 @@ html(ng-app="btcApp")
     footer
       | © 2014&nbsp&nbsp
       a(href='http://stevenliss.com/') Steven B. Liss
+
+    //Add Marker Modal
+    div#pledge_modal_container
+        div.modal.fade#pledge_modal
+            div.modal-dialog.modal-lg
+                div.modal-content
+                    div.modal-header
+                        button.close(type="button", data-dismiss="modal")
+                            span(aria-hidden="true") &times;
+                            span.sr-only Close
+                        center
+                            h4.lead.modal-title Take the pledge!  Beat the curve!
+                        
+                    div.modal-body#add_marker_body
+                        p Lorem ipsum 
+
+
+

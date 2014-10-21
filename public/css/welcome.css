@@ -106,6 +106,7 @@ label{
 #recruit_btn{
 	margin: auto 0;
 	float: none;
+	font-size: 2em;
 }
 
 #state_insight{
@@ -223,3 +224,5 @@ footer{
 	color:white;
 	text-align: right;
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }

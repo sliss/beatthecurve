@@ -1,85 +1,25 @@
 var btcApp = angular.module('btcApp', [
-
+  'ngRoute',
+  'ui.bootstrap'
 ]);
 
-btcApp.controller('HomeController', ['$scope', function($scope) {
+btcApp.controller('HomeController', ['$scope', '$modal', function($scope, $modal) {
   console.log('home controller');
+  $scope.items = ['item1', 'item2', 'item3'];
+
+  $modal.open({
+    templateUrl: 'partials/modalContent.html',
+    resolve: {
+      items: function () {
+        return $scope.items;
+      }
+    }
+  });
 }]);
 
 btcApp.directive('mainChart', function() {
     function link() {
       console.log('mainChart');
-      /*
-      var margin = {top: 20, right: 20, bottom: 70, left: 40},
-        width = 600 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
-           
-      // Parse the date / time
-      var parseDate = d3.time.format("%m-%d-%y").parse;
-       
-      var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-       
-      var y = d3.scale.linear().range([height, 0]);
-       
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom")
-          .tickFormat(d3.time.format("%m-%d"))
-          .ticks(2);
-       
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left")
-          .ticks(10);
-       
-      var svg = d3.select("chart").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", 
-                "translate(" + margin.left + "," + margin.top + ")");
-       
-      d3.csv("sample_infections.csv", function(error, data) {
-       
-          data.forEach(function(d) {
-              d.date = parseDate(d.date);
-              d.value = +d.value;
-          });
-        
-        x.domain(data.map(function(d) { return d.date; }));
-        y.domain([0, d3.max(data, function(d) { return d.value; })]);
-       
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
-          .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", "-.55em")
-            .attr("transform", "rotate(-90)" );
-       
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Cases");
-       
-        svg.selectAll("bar")
-            .data(data)
-          .enter().append("rect")
-            .style("fill", "lightcoral")
-            .attr("x", function(d) { return x(d.date); })
-            .attr("width", x.rangeBand())
-            .attr("y", function(d) { return y(d.value); })
-            .attr("height", function(d) { return height - y(d.value); });
-       
-      });*/
-
 
       d3.json("linePlusBarData.json",function(error,data) {
         nv.addGraph(function() {
