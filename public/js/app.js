@@ -6,16 +6,32 @@ var btcApp = angular.module('btcApp', [
 btcApp.controller('HomeController', ['$scope', '$modal', function($scope, $modal) {
   console.log('home controller');
   $scope.items = ['item1', 'item2', 'item3'];
-
-  $modal.open({
-    templateUrl: 'partials/modalContent.html',
-    resolve: {
-      items: function () {
-        return $scope.items;
+  
+  $scope.open = function () {
+    console.log('open modal!');
+    $modal.open({
+      templateUrl: 'partials/modalContent.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
       }
-    }
-  });
+    });
+  };
+
 }]);
+
+//controller for the modal
+angular.module('btcApp').controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
+  $scope.ok = function () {
+    $modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});
 
 btcApp.directive('mainChart', function() {
     function link() {

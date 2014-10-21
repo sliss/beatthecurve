@@ -57,10 +57,7 @@ html(ng-app="btcApp")
                                 span#sum_descendants_donations $2,188
                             div.row 
                                 div.col-md-3
-                                //button.col-md-6#pledge_btn Pledge Your Help
-                                button.col-md-6(ng-click="toggleModal()") Open Modal Dialog
-                                modal-dialog(show="modalShown", width="750px", height="60%")
-                                    p Modal Content Goes here
+                                button.col-md-6#pledge_btn(ng-click="open()") Pledge Your Help
                                 
                                 div
                                   | This example creates a story on Facebook using the
@@ -75,6 +72,7 @@ html(ng-app="btcApp")
 
                                 div
                                   input(type="button", value="Create a story with an og.likes action", onclick="postLike();")
+
 
                             tree
                                 div(tree-chart)
